@@ -1,0 +1,49 @@
+.loginPageMain{
+  background: #7F7FD5;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #52cdc5, #5b8ae1, #4d4d9c);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #52cdc5, #5b8ae1, #4d4d9c);
+}
+
+.meetTeam-btns {
+  display: flex;
+  min-width: fit-content;
+  align-items: center;
+  width: fit-content;
+  padding: 0.4em;
+  border-radius: 3px;
+  color: #fffcfc;
+  font-size: 17px;
+  margin-top: 12px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  border-radius: 10px;
+  color: black;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.253);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.buttons_container{
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  position: absolute;
+  bottom: 8%;
+  right:20%;  
+}
+
+.loginPage{
+  // width: 70%;
+  display: flex;
+  justify-content: center;
+  width:70vw;
+  height: 100vh;
+  margin: auto;
+  // height: ;
+}

@@ -1,0 +1,26 @@
+.title{
+  text-align: center;
+  /* color: maroon; */
+  /* font-family: "Montserrat", sans-serif; */
+}
+.modalContentSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+
+}
+.item{
+  display: flex;
+  justify-content:space-between;
+  padding: 2rem;
+  align-items: center;
+  flex-direction: column;
+}
+.item p{
+  font-style: italic;
+}
+.countup{
+  margin-top: 1rem;
+  font-size: xx-large;
+}

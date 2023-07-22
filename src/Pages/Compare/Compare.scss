@@ -1,0 +1,39 @@
+.compare{
+    margin: auto;
+    text-align: center;
+    margin-top: 100px;
+    width: 100%;
+}
+.compare h3{
+    border: 0.7px solid grey;
+    background-color: rgba(247, 247, 96, 0.658);
+    margin-bottom: 0px;
+}
+
+    .year_container{
+    margin: auto;
+    }
+    .year_selectors{
+        margin: auto;
+    }
+    .year_data{
+        // display: none;
+        width: 90%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+.compareSVG{
+    margin: auto;
+    animation: blink 1s step-start infinite;
+    opacity: 50%;
+}
+.tables_container_compare{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+}
