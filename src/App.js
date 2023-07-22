@@ -13,7 +13,7 @@ import Admin from "./Pages/Admin/Admin";
 import NavBar from "./Components/Navbar/NavBar";
 import { firebase } from "./backend/firebase.config";
 import Highlights from "./Pages/Highlights/Highlights";
-import Compare from "./Pages/Compare/Compare3.jsx";
+// import Compare from "./Pages/Compare/Compare3.jsx";
 import NotFound from "./Pages/404/NotFound";
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const App = () => {
@@ -72,7 +72,7 @@ const App = () => {
               <Route exact path="/adminpannel" element={<Admin />} />
               <Route exact path="/team" element={<Team />} />
               <Route exact path="/highlights" element={<Highlights />} />
-              <Route exact path="/compare" element={<Compare />} />
+              {/* <Route exact path="/compare" element={<Compare />} /> */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </UserContext.Provider>
@@ -85,7 +85,7 @@ const App = () => {
               <Route exact path="/team" element={<Team />} />
               <Route exact path="/" element={<RestrictedView />} />
               <Route exact path="/highlights" element={<Highlights />} />
-              <Route exact path="/compare" element={<Compare />} />
+              {/* <Route exact path="/compare" element={<Compare />} /> */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </UserContext.Provider>

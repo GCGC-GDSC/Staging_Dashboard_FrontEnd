@@ -5,7 +5,7 @@ import OVerticalBarChart from "../Overall/charts/OVerticalBarChart";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { unstable_batchedUpdates } from "react-dom";
-import objRef,{parsedInstituteStudentDataFormatCampusWise} from "./APIKeys.js";
+import objRef, { parsedInstituteStudentDataFormatCampusWise } from "./APIKeys.js";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Snackbar from '@mui/material/Snackbar';
 import "./CampusWise.styles.scss";
-import {colors} from "../ColorAssets/colorPallet.js";
+import { colors } from "../ColorAssets/colorPallet.js";
 import Table from "../../Components/Table/Table"
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { UserContext } from '../../context/context';
@@ -23,6 +23,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Branchwise from "./Branchwise/Branchwise";
+import yearList from "../../UtilityFunctions/yearList";
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 const CampusNames = {
@@ -31,13 +32,13 @@ const CampusNames = {
   blr: "Bengaluru",
 };
 const CampusNamesToCode = {
-  "Visakhapatnam":"vskp",
-  "Hyderabad":"hyd",
-  "Bengaluru":"blr",
+  "Visakhapatnam": "vskp",
+  "Hyderabad": "hyd",
+  "Bengaluru": "blr",
 };
-function CampusWise({year,setYear}) {
+function CampusWise({ year, setYear }) {
   const user = useContext(UserContext)
-  const [userMultiAccess,setUserMultiAccess] = useState(false)
+  const [userMultiAccess, setUserMultiAccess] = useState(false)
   const [campusData, setCampusData] = useState({});
   const [instData, setInstData] = useState([]);
   const [instList, setInstList] = useState([]);
@@ -45,17 +46,19 @@ function CampusWise({year,setYear}) {
   const [campusName, setCampusName] = useState("");
   const [showD2, setShowD2] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
-  const [instNameForRender,setInstNameForRender] = useState("")
+  const [instNameForRender, setInstNameForRender] = useState("")
   const [open, setOpen] = useState(false);
   const handleClose = () => {
-      setOpen(false);
-    };
+    setOpen(false);
+  };
 
-      // const [year, setYear] = useState(2021);
-      const yearsList = [2021,2022,2023,2024,2025]
+  // const [year, setYear] = useState(2021);
+
+
+  // const yearsList = [2021,2022,2023,2024,2025]
 
   const handleYearChange = (event) => {
-    unstable_batchedUpdates(()=>{  
+    unstable_batchedUpdates(() => {
       setShowCharts(false)
       setShowD2(false)
       setYear(event.target.value);
@@ -97,20 +100,20 @@ function CampusWise({year,setYear}) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-const [valueOuter, setValueOuter] = useState(0);
+  const [valueOuter, setValueOuter] = useState(0);
 
-const handleChangeOuter = (event, newValue) => {
-  setValueOuter(newValue);
-};
+  const handleChangeOuter = (event, newValue) => {
+    setValueOuter(newValue);
+  };
 
   const chartOptions = {
     Doughnut: {
       onClick: function (evt, item) {
         if (item[0]) {
           const itemIndex = item[0].index
-          if(userMultiAccess || campusList[itemIndex][0] === user.user.campus[0].name )
-              getData(campusList[itemIndex][0]);
-          else{
+          if (userMultiAccess || campusList[itemIndex][0] === user.user.campus[0].name)
+            getData(campusList[itemIndex][0]);
+          else {
             setOpen(true)
           }
         }
@@ -172,7 +175,7 @@ const handleChangeOuter = (event, newValue) => {
         }
       },
     },
-    DoughnutUG:{
+    DoughnutUG: {
       rotation: Math.PI * 5,
       plugins: {
         legend: {
@@ -184,7 +187,7 @@ const handleChangeOuter = (event, newValue) => {
         },
       },
     },
-    DoughnutPG:{
+    DoughnutPG: {
       rotation: Math.PI * 5,
       plugins: {
         legend: {
@@ -204,7 +207,7 @@ const handleChangeOuter = (event, newValue) => {
       {
         label: "Number of Institute",
         data: campusList.map((item) => item[1]),
-        backgroundColor:colors,
+        backgroundColor: colors,
         borderColor: colors,
         borderWidth: 1,
       },
@@ -269,19 +272,19 @@ const handleChangeOuter = (event, newValue) => {
         label: "Salary in LPA",
         data: arr,
         backgroundColor: colors,
-        borderColor:colors
+        borderColor: colors
         ,
         borderWidth: 2,
       },
     ];
     return dataObj;
   };
-  
+
   if (showCharts) {
 
     // ----------------------------DC----
-    var DoughnutUGSD={ 
-    labels:parsedInstituteStudentDataFormatCampusWise["student_details"],
+    var DoughnutUGSD = {
+      labels: parsedInstituteStudentDataFormatCampusWise["student_details"],
       datasets: getDataForDC(
         "UG",
         objRef["student_details"],
@@ -289,7 +292,7 @@ const handleChangeOuter = (event, newValue) => {
       ),
     };
     var DoughnutPGSD = {
-      labels:parsedInstituteStudentDataFormatCampusWise["student_details"],
+      labels: parsedInstituteStudentDataFormatCampusWise["student_details"],
       datasets: getDataForDC(
         "PG",
         objRef["student_details"],
@@ -297,7 +300,7 @@ const handleChangeOuter = (event, newValue) => {
       ),
     };
     var DoughnutUGPGSD = {
-      labels:parsedInstituteStudentDataFormatCampusWise["student_details"],
+      labels: parsedInstituteStudentDataFormatCampusWise["student_details"],
       datasets: getDataForDC(
         "UGPG",
         objRef["student_details"],
@@ -306,7 +309,7 @@ const handleChangeOuter = (event, newValue) => {
     };
 
     var DoughnutUGPD = {
-      labels:parsedInstituteStudentDataFormatCampusWise["placement_details"],
+      labels: parsedInstituteStudentDataFormatCampusWise["placement_details"],
       datasets: getDataForDC(
         "UG",
         objRef["placement_details"],
@@ -314,7 +317,7 @@ const handleChangeOuter = (event, newValue) => {
       ),
     };
     var DoughnutPGPD = {
-      labels:parsedInstituteStudentDataFormatCampusWise["placement_details"],
+      labels: parsedInstituteStudentDataFormatCampusWise["placement_details"],
       datasets: getDataForDC(
         "PG",
         objRef["placement_details"],
@@ -322,7 +325,7 @@ const handleChangeOuter = (event, newValue) => {
       ),
     };
     var DoughnutUGPGPD = {
-      labels:parsedInstituteStudentDataFormatCampusWise["placement_details"],
+      labels: parsedInstituteStudentDataFormatCampusWise["placement_details"],
       datasets: getDataForDC(
         "UGPG",
         objRef["placement_details"],
@@ -370,49 +373,48 @@ const handleChangeOuter = (event, newValue) => {
       return dataObj;
     };
     var VerticalBarChartUG = {
-      labels:parsedInstituteStudentDataFormatCampusWise["salary"],
+      labels: parsedInstituteStudentDataFormatCampusWise["salary"],
       datasets: getDataForVC("UG", objRef["salary"], "salary"),
     };
     var VerticalBarChartPG = {
-      labels:parsedInstituteStudentDataFormatCampusWise["salary"],
+      labels: parsedInstituteStudentDataFormatCampusWise["salary"],
       datasets: getDataForVC("PG", objRef["salary"], "salary"),
     };
     var VerticalBarChartUGPG = {
-      labels:parsedInstituteStudentDataFormatCampusWise["salary"],
+      labels: parsedInstituteStudentDataFormatCampusWise["salary"],
       datasets: getDataForVC("UGPG", objRef["salary"], "salary"),
     };
     //  --------------------------------------/VC --------------------
-   
-  }
- // Tables -------------------------------
- const TABLE_DATA = (code,gradType,category)=>{
-  const getTableData = (code,category)=>{
-    const keys = objRef[category]
-    let arr = []
-    if(code !== 10)
-      {
-        for(let i = 0;i < keys.length;i++){
-          arr.push([instData.data[code][category][keys[i]]])
-          }
-      }
-    else{
-      arr = combineArrays(keys,instData.data[0][category],instData.data[1][category],category).values
-      arr = arr.map(item=>[item])
-    }
-    return arr
-  }
 
-  const TableData ={
-    column:[instData.name.toUpperCase()],
-    data :getTableData(code,category)
   }
-  return TableData
-}
-//  -------------- TABLES----------------
+  // Tables -------------------------------
+  const TABLE_DATA = (code, gradType, category) => {
+    const getTableData = (code, category) => {
+      const keys = objRef[category]
+      let arr = []
+      if (code !== 10) {
+        for (let i = 0; i < keys.length; i++) {
+          arr.push([instData.data[code][category][keys[i]]])
+        }
+      }
+      else {
+        arr = combineArrays(keys, instData.data[0][category], instData.data[1][category], category).values
+        arr = arr.map(item => [item])
+      }
+      return arr
+    }
+
+    const TableData = {
+      column: [instData.name.toUpperCase()],
+      data: getTableData(code, category)
+    }
+    return TableData
+  }
+  //  -------------- TABLES----------------
   const getDataInst = (instName) => {
     axios
-      .get(`${REACT_APP_API_URL}students/${year}/inst/${instName}/${CampusNamesToCode[campusName]}`,{
-      headers: {
+      .get(`${REACT_APP_API_URL}students/${year}/inst/${instName}/${CampusNamesToCode[campusName]}`, {
+        headers: {
           'Authorization': `Token ${user.user.token.key}`
         }
       })
@@ -438,13 +440,13 @@ const handleChangeOuter = (event, newValue) => {
       setShowD2(true);
     });
   };
-  
-  
+
+
 
   useEffect(() => {
     const getCampus = () => {
       axios
-        .get(`${REACT_APP_API_URL}organization/campus`,{
+        .get(`${REACT_APP_API_URL}organization/campus`, {
           headers: {
             'Authorization': `Token ${user.user.token.key}`
           }
@@ -460,340 +462,341 @@ const handleChangeOuter = (event, newValue) => {
           });
         });
     };
-    const checkMultiUser = () =>{
-      if(user.user.campus.length>1)
+    const checkMultiUser = () => {
+      if (user.user.campus.length > 1)
         setUserMultiAccess(true)
     }
     checkMultiUser()
     getCampus();
     // getData(user.user.campus.name)
-  }, [user,year]);
+  }, [user, year]);
   return (
     <>
-     <Snackbar
-        anchorOrigin={{ vertical:"bottom", horizontal:"left" }}
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         autoHideDuration={3000}
         open={open}
         onClose={handleClose}
         message={`Sorry! You do not have access`}
-    >
+      >
         <SnackbarContent style={{
-            backgroundColor:'orange',
-          }}
+          backgroundColor: 'orange',
+        }}
           message={`Sorry! You do not have access`}
         />
       </Snackbar>
-    <Box className="overall-layout">
-    <FormControl sx={{ m: 1, minWidth: 100 }} style={{position:"absolute"}}>
-        <InputLabel id="demo-simple-select-helper-label">Year</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={year}
-          label="Year"
-          onChange={handleYearChange}
-        >
-         {yearsList.map((year) => 
-            <MenuItem value={year}>{year}</MenuItem>
-          )}
-        </Select>
-        <FormHelperText>see the stats.</FormHelperText>
-      </FormControl>
-      <Grid container spacing={2} className="firstContainer" alignItems="center" >
-      {/* {userMultiAccess? */}
-        <Grid item xs={5.7} style={{marginTop:"-80px"}}>
-          
-          <ODoughnutChart
-            title={`Campus Wise Overview -${year}`}
-            data={dataDoughnut}
-            options={chartOptions.Doughnut}
-          />
-        </Grid>
-      {showD2? (
-        <>
-          <Grid item xs={5.5} p={3} ml={5}  style={{marginTop:"-60px"}}>
-          <div className="headings campusWiseSecondDoughnutChart" id={`stream`} >
-                <div className="sub">
-          {`${campusName} Institute Overview`}
-                </div>
-                </div>
+      <Box className="overall-layout">
+        <FormControl sx={{ m: 1, minWidth: 100 }} style={{ position: "absolute" }}>
+          <InputLabel id="demo-simple-select-helper-label">Year</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={year}
+            label="Year"
+            onChange={handleYearChange}
+          >
+            {yearList.map((year) =>
+              <MenuItem value={year}>{year}</MenuItem>
+            )}
+          </Select>
+          <FormHelperText>see the stats.</FormHelperText>
+        </FormControl>
+        <Grid container spacing={2} className="firstContainer" alignItems="center" >
+          {/* {userMultiAccess? */}
+          <Grid item xs={5.7} style={{ marginTop: "-80px" }}>
+
             <ODoughnutChart
-              // title={`${campusName} Institute Overview`}
-              data={dataDoughnut2}
-              options={chartOptions.Doughnut2}
+              title={`Campus Wise Overview -${year}`}
+              data={dataDoughnut}
+              options={chartOptions.Doughnut}
             />
           </Grid>
-          </>
-        ) : null}
-        
-      </Grid>
-    </Box>
+          {showD2 ? (
+            <>
+              <Grid item xs={5.5} p={3} ml={5} style={{ marginTop: "-60px" }}>
+                <div className="headings campusWiseSecondDoughnutChart" id={`stream`} >
+                  <div className="sub">
+                    {`${campusName} Institute Overview`}
+                  </div>
+                </div>
+                <ODoughnutChart
+                  // title={`${campusName} Institute Overview`}
+                  data={dataDoughnut2}
+                  options={chartOptions.Doughnut2}
+                />
+              </Grid>
+            </>
+          ) : null}
+
+        </Grid>
+      </Box>
       {showCharts ? (
         <div>
-           <Box sx={{ borderBottom: 1, borderColor: "divider" }} mt={5}>
-             <Box sx={{ borderBottom: 1, borderColor: "divider" }} mt={5}>
-               <Tabs
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }} mt={5}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }} mt={5}>
+              <Tabs
                 value={valueOuter}
                 onChange={handleChangeOuter}
                 textColor="secondary"
                 indicatorColor="secondary"
                 variant="fullWidth"
                 centered
+                aria-label="basic tabs example"
+              >
+                <Tab label="Institute Only" {...a11yProps(0)} />
+                <Tab label="Branchwise View" {...a11yProps(1)} />
+              </Tabs>
+            </Box>
+            <TabPanel value={valueOuter} index={0} style={{ width: "100%" }}>
+              <Box>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }} mt={5}>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    variant="fullWidth"
+                    centered
                     aria-label="basic tabs example"
                   >
-                    <Tab label="Institute Only" {...a11yProps(0)} />
-                    <Tab label="Branchwise View" {...a11yProps(1)} />
+                    <Tab label="UG and PG" {...a11yProps(0)} />
+                    <Tab label="UnderGraduate" {...a11yProps(1)} />
+                    <Tab label="PostGraduate" {...a11yProps(2)} />
                   </Tabs>
-               </Box>
-              <TabPanel value={valueOuter} index={0} style={{width:"100%"}}>
-                <Box>
-                  <Box sx={{ borderBottom: 1, borderColor: "divider" }} mt={5}>
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      textColor="secondary"
-                  indicatorColor="secondary"
-                  variant="fullWidth"
-                  centered
-                      aria-label="basic tabs example"
-                    >
-                      <Tab label="UG and PG" {...a11yProps(0)} />
-                      <Tab label="UnderGraduate" {...a11yProps(1)} />
-                      <Tab label="PostGraduate" {...a11yProps(2)} />
-                    </Tabs>
-                  </Box>
-                  <Grid container className="firstItem" alignItems="center">
-                  <TabPanel value={value} index={0} style={{width:"100%"}}>
-                    
+                </Box>
+                <Grid container className="firstItem" alignItems="center">
+                  <TabPanel value={value} index={0} style={{ width: "100%" }}>
+
                     <Grid container spacing={9} alignItems="center" justifyContent="space-around" mt={2} >
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${campusName}`} 
-                      </div>
-                      </div>
-                      <div className="headings" id={`stream`}  style={{marginTop:"20px",marginBottom:"-100px"}}>
+                      <div className="headings" id={`stream`} >
                         <div className="sub">
-                        {`${instData.name.toUpperCase() } Student Details / ${year}`}
+                          {`${campusName}`}
+                        </div>
+                      </div>
+                      <div className="headings" id={`stream`} style={{ marginTop: "20px", marginBottom: "-100px" }}>
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Student Details / ${year}`}
                         </div>
                       </div>
                       <Grid item xs={6} >
                         <ODoughnutChart
-                        isCampus={true}
+                          isCampus={true}
                           // title={`${instData.name} Student Details`}
                           data={DoughnutUGPGSD}
                           options={chartOptions.DoughnutUGPG}
                         />
                       </Grid>
                       <Grid item xs={6}>
-                        <Table column={TABLE_DATA(10,"UGPG","student_details").column} 
-                        data={TABLE_DATA(10,"UGPG","student_details").data} 
-                        category={"Student Details"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["student_details"]}/>
+                        <Table column={TABLE_DATA(10, "UGPG", "student_details").column}
+                          data={TABLE_DATA(10, "UGPG", "student_details").data}
+                          category={"Student Details"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["student_details"]} />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} alignItems="center"  justifyContent="space-around" px={7}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Placement Details / ${year}`}
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-around" px={7}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Placement Details / ${year}`}
 
+                        </div>
                       </div>
-                      </div>
-                    <Grid item xs={5} >
-                      
-                      <ODoughnutChart
-                      isCampus={true}
-                        // title={`${instData.name} Placement Details`}
-                        data={DoughnutUGPGPD}
-                        options={chartOptions.DoughnutUGPG}
-                      />
-                    </Grid>
-                    <Grid item xs={5} ml={15}>
-                        <Table column={TABLE_DATA(10,"UGPG","placement_details").column} 
-                        data={TABLE_DATA(10,"UGPG","placement_details").data} 
-                        category={"Placement Details"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["placement_details"]}/>
+                      <Grid item xs={5} >
+
+                        <ODoughnutChart
+                          isCampus={true}
+                          // title={`${instData.name} Placement Details`}
+                          data={DoughnutUGPGPD}
+                          options={chartOptions.DoughnutUGPG}
+                        />
+                      </Grid>
+                      <Grid item xs={5} ml={15}>
+                        <Table column={TABLE_DATA(10, "UGPG", "placement_details").column}
+                          data={TABLE_DATA(10, "UGPG", "placement_details").data}
+                          category={"Placement Details"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["placement_details"]} />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} alignItems="center"  justifyContent="space-around" px={7}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Package Details / ${year}`}
-                      </div>
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-around" px={7}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Package Details / ${year}`}
+                        </div>
                       </div>
                       <Grid item xs={5} >
                         <OVerticalBarChart
-                        isCampus={true}
+                          isCampus={true}
                           // title={`${instData.name} Package Details`}
                           data={VerticalBarChartUGPG}
                           options={chartOptions.VerticalBarChart1}
                         />
                       </Grid>
                       <Grid item xs={5} ml={15}>
-                        <Table column={TABLE_DATA(10,"UGPG","salary").column} 
-                        data={TABLE_DATA(10,"UGPG","salary").data} 
-                        category={"Package(LPA)"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["salary"]}/>
+                        <Table column={TABLE_DATA(10, "UGPG", "salary").column}
+                          data={TABLE_DATA(10, "UGPG", "salary").data}
+                          category={"Package(LPA)"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["salary"]} />
                       </Grid>
                     </Grid>
                   </TabPanel>
 
 
-                  <TabPanel value={value} index={1} style={{width:"100%"}}>
-                  <Grid container spacing={9} alignItems="center" justifyContent="space-around" mt={2}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${campusName}`}
-                      </div>
+                  <TabPanel value={value} index={1} style={{ width: "100%" }}>
+                    <Grid container spacing={9} alignItems="center" justifyContent="space-around" mt={2}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${campusName}`}
+                        </div>
                       </div>
                       <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Student Details / ${year}`}
-                      </div>
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Student Details / ${year}`}
+                        </div>
                       </div>
                       <Grid item xs={6}>
-                      
+
                         <ODoughnutChart
-                        isCampus={true}
+                          isCampus={true}
                           // title={`${instData.name} Student Details`}
                           data={DoughnutUGSD}
                           options={chartOptions.DoughnutUG}
                         />
                       </Grid>
                       <Grid item xs={5} >
-                        <Table column={TABLE_DATA(0,"UG","student_details").column} 
-                        data={TABLE_DATA(0,"UG","student_details").data} 
-                        category={"Student Details"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["student_details"]}/>
+                        <Table column={TABLE_DATA(0, "UG", "student_details").column}
+                          data={TABLE_DATA(0, "UG", "student_details").data}
+                          category={"Student Details"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["student_details"]} />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} alignItems="center"  justifyContent="space-around" px={7}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Placement Details / ${year}`}
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-around" px={7}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Placement Details / ${year}`}
+                        </div>
                       </div>
-                      </div>
-                    <Grid item xs={5}>
-                      <ODoughnutChart
-                      isCampus={true}
-                        // title={`${instData.name} Placement Details`}
-                        data={DoughnutUGPD}
-                        options={chartOptions.DoughnutUG}
-                      />
-                    </Grid>
-                    <Grid item xs={6} ml={9}>
-                        <Table column={TABLE_DATA(0,"UG","placement_details").column} 
-                        data={TABLE_DATA(0,"UG","placement_details").data} 
-                        category={"Placement Details"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["placement_details"]}/>
+                      <Grid item xs={5}>
+                        <ODoughnutChart
+                          isCampus={true}
+                          // title={`${instData.name} Placement Details`}
+                          data={DoughnutUGPD}
+                          options={chartOptions.DoughnutUG}
+                        />
+                      </Grid>
+                      <Grid item xs={6} ml={9}>
+                        <Table column={TABLE_DATA(0, "UG", "placement_details").column}
+                          data={TABLE_DATA(0, "UG", "placement_details").data}
+                          category={"Placement Details"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["placement_details"]} />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} alignItems="center"  justifyContent="space-around" px={7}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Package Details / ${year}`}
-                      </div>
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-around" px={7}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Package Details / ${year}`}
+                        </div>
                       </div>
                       <Grid item xs={5}>
                         <OVerticalBarChart
-                        isCampus={true}
+                          isCampus={true}
                           // title={`${instData.name} Package Details`}
                           data={VerticalBarChartUG}
                           options={chartOptions.VerticalBarChart1}
                         />
                       </Grid>
                       <Grid item xs={5} >
-                        <Table column={TABLE_DATA(0,"UG","salary").column} 
-                        data={TABLE_DATA(0,"UG","salary").data} 
-                        category={"Package(LPA)"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["salary"]}/>
+                        <Table column={TABLE_DATA(0, "UG", "salary").column}
+                          data={TABLE_DATA(0, "UG", "salary").data}
+                          category={"Package(LPA)"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["salary"]} />
                       </Grid>
                     </Grid>
                   </TabPanel>
 
 
-                  <TabPanel value={value} index={2} style={{width:"100%"}}>
-                  <Grid container spacing={9} alignItems="center"  justifyContent="space-around" mt={2}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${campusName}`}
-                      </div>
+                  <TabPanel value={value} index={2} style={{ width: "100%" }}>
+                    <Grid container spacing={9} alignItems="center" justifyContent="space-around" mt={2}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${campusName}`}
+                        </div>
                       </div>
                       <div className="headings cardtitles" id={`stream`}>
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Student Details / ${year}`}
-                      </div>
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Student Details / ${year}`}
+                        </div>
                       </div>
                       <Grid item xs={6}>
                         <ODoughnutChart
-                        isCampus={true}
+                          isCampus={true}
                           // title={`${instData.name} Student Details`}
                           data={DoughnutPGSD}
                           options={chartOptions.DoughnutPG}
                         />
                       </Grid>
                       <Grid item xs={6} >
-                        <Table column={TABLE_DATA(1,"PG","student_details").column} 
-                        data={TABLE_DATA(1,"PG","student_details").data} 
-                        category={"Student Details"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["student_details"]}/>
+                        <Table column={TABLE_DATA(1, "PG", "student_details").column}
+                          data={TABLE_DATA(1, "PG", "student_details").data}
+                          category={"Student Details"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["student_details"]} />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} alignItems="center"  justifyContent="space-around" px={7}>
-                    <div className="headings cardtitles" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase()} Placement Details / ${year}`}
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-around" px={7}>
+                      <div className="headings cardtitles" id={`stream`} >
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Placement Details / ${year}`}
+                        </div>
                       </div>
-                      </div>
-                    <Grid item xs={5}>
-                      <ODoughnutChart
-                      isCampus={true}
-                        // title={`${instData.name} Placement Details`}
-                        data={DoughnutPGPD}
-                        options={chartOptions.DoughnutPG}
-                      />
-                    </Grid>
-                    <Grid item xs={6} ml={10}>
-                        <Table column={TABLE_DATA(1,"PG","placement_details").column} 
-                        data={TABLE_DATA(1,"PG","placement_details").data} 
-                        category={"Placement Details"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["placement_details"]}/>
+                      <Grid item xs={5}>
+                        <ODoughnutChart
+                          isCampus={true}
+                          // title={`${instData.name} Placement Details`}
+                          data={DoughnutPGPD}
+                          options={chartOptions.DoughnutPG}
+                        />
+                      </Grid>
+                      <Grid item xs={6} ml={10}>
+                        <Table column={TABLE_DATA(1, "PG", "placement_details").column}
+                          data={TABLE_DATA(1, "PG", "placement_details").data}
+                          category={"Placement Details"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["placement_details"]} />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={2} alignItems="center"  justifyContent="space-around" px={7}>
-                    <div className="headings" id={`stream`} >
-                      <div className="sub">
-                      {`${instData.name.toUpperCase() } Package Details / ${year}`}
-                      </div>
+                    <Grid container spacing={2} alignItems="center" justifyContent="space-around" px={7}>
+                      <div className="headings" id={`stream`} >
+                        <div className="sub">
+                          {`${instData.name.toUpperCase()} Package Details / ${year}`}
+                        </div>
                       </div>
                       <Grid item xs={6}>
                         <OVerticalBarChart
-                        isCampus={true}
+                          isCampus={true}
                           // title={`${instData.name} Package Details`}
                           data={VerticalBarChartPG}
                           options={chartOptions.VerticalBarChart1}
                         />
                       </Grid>
                       <Grid item xs={6} >
-                        <Table column={TABLE_DATA(1,"PG","salary").column} 
-                        data={TABLE_DATA(1,"PG","salary").data} 
-                        category={"Package(LPA)"} 
-                        keys={parsedInstituteStudentDataFormatCampusWise["salary"]}/>
+                        <Table column={TABLE_DATA(1, "PG", "salary").column}
+                          data={TABLE_DATA(1, "PG", "salary").data}
+                          category={"Package(LPA)"}
+                          keys={parsedInstituteStudentDataFormatCampusWise["salary"]} />
                       </Grid>
                     </Grid>
                   </TabPanel>
-                  </Grid>
-                </Box>
-              </TabPanel>
-              {/* changed value = {value} to value={valueOrder} */}
-              <TabPanel value={valueOuter} index={1} style={{width:"100%"}}>
-                {/* Branch wise component */}
-                {instNameForRender === "gst" ?
-                <Branchwise campus={CampusNamesToCode[campusName]} year ={year} institute={instData.name}/>:null}
-               </TabPanel>
+                </Grid>
+              </Box>
+            </TabPanel>
+            {/* changed value = {value} to value={valueOrder} */}
+            <TabPanel value={valueOuter} index={1} style={{ width: "100%" }}>
+              {/* Branch wise component */}
+              {instNameForRender === "gst" ?
+                <Branchwise campus={CampusNamesToCode[campusName]} year={year} institute={instData.name} /> : null}
+            </TabPanel>
           </Box>
         </div>
       ) : null}
-      
-      </>
-  )}
+
+    </>
+  )
+}
 export default CampusWise;
